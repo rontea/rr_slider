@@ -1,0 +1,261 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 30, 2016, 6:13:11 AM
+    Author     : rontea
+*/
+/* Main */
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+#items{
+    
+ width: 100%;
+ height: 280px;
+
+
+}
+#items .carousel {
+    max-width: 500px;
+    height: 280px;   
+    width: 100%;
+  overflow:hidden; 
+  position: relative;
+
+}
+
+#items .carousel ul {
+   
+  margin: 0;
+  padding: 0;
+  position: relative;
+ 
+}
+
+/* li */
+#items .carousel .content li {
+
+  max-width: 500px;
+  list-style: none;
+  float: left;
+  padding: 0;
+  margin: 0;
+  float: left;
+  position: relative;
+
+}
+
+/* item info */
+#items .carousel .content li img{
+    height: 280px;
+    width: 100%;
+    float: left;
+    position: relative;
+  
+}
+
+#items .carousel .content li .item-info .info {
+    
+    width: 50%;
+    height: auto;
+    position: absolute;
+    left:0;
+    top:0;
+    background-color: #FFFFFF;
+    padding:1%;
+    
+}
+
+#items .carousel .content li .item-info .info .title{
+    
+    width: 100%;
+    float:left;
+    clear: both;
+    text-align: left;
+    position: relative;
+    
+    
+}
+#items .carousel .content li .item-info .info .description{
+    
+    width: 100%;
+    float:left;
+    clear: both;
+    text-align: left;
+    position: relative;
+    
+}
+
+/* Navigation */
+
+#items .nav{
+  width:100%;
+  height: 30px;
+  position: relative;
+  top:125px;
+  left: 0;
+  float: left;
+  
+}
+
+#items .nav .left{
+    
+    width: 30px;
+    height: 30px;
+    background-color: #000;
+    position: relative;
+    float: left;
+    
+}
+
+#items .nav .right{
+    width: 30px;
+    height: 30px;
+    background-color: #000;
+    position: relative;
+    float: right;
+    
+}
+
+#items .nav .left:hover{
+    
+    background-color: #cc00ff;
+    
+}
+
+#items .nav .right:hover{
+    
+    background-color: #cc00ff;
+    
+}
+#items .thumbItems {
+    
+}
+/* thumbnail */
+#items  .thumb {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top:200px;
+    width: auto;
+    height: 20px;
+    float: right;
+     
+}   
+#items  .thumb li{
+    list-style: none;
+    width:20px;
+    height: 20px;
+    float: left;
+    background-color:#FFFFFF;
+    opacity: 1;
+    margin-right: 3px;
+    border:#cc00ff solid 1px;
+    
+}
+
+#items .thumb li.active{
+    background-color:#00cc00;
+    border:#FFFFFF solid 1px;
+}
+
+/* Interaction Animate */
+
+#items li.fadeIn{
+ 
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+#items li.fadeOut{
+   
+   -webkit-animation-duration: 1s;
+   animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+   animation-fill-mode: both;
+   -webkit-animation-name: fadeOut;
+   animation-name: fadeOut;
+}
+
+#items li{
+        opacity: 0;
+}
+
+
+
+#items li.carRight{
+    
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    -webkit-animation-fill-mode: both;
+     animation-fill-mode: both;
+     -webkit-animation-name: slideRight;
+     animation-name: slideRight;
+}
+#items li.carLeft{
+    -webkit-animation-duration:1s;
+    animation-duration: 1s;
+     animation-fill-mode: both;
+     -webkit-animation-fill-mode: both;
+      animation-timing-function: linear;
+     animation-name: slideLeft;
+     -webkit-animation-name: slideLeft;
+     
+}
+
+
+
+@keyframes slideRight{
+    
+    from{
+        margin-left:0;
+    }
+    to{
+         margin-left:-100%;
+    }
+    
+}
+
+
+@-webkit-keyframes slideRight{
+    
+    from{
+       margin-left:0%;
+    }
+    to{
+         margin-left:-100%;
+    }
+    
+}
+
+@keyframes slideLeft{
+    
+    from{
+        margin-left:-100%;
+        
+    }
+    to{
+         margin-left:0;
+    }
+    
+}
+
+@-webkit-keyframes slideLeft{
+    from{
+        margin-left:-100%;
+    }
+    to{
+         margin-left:0;
+    }
+}
