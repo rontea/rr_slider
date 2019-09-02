@@ -9,17 +9,12 @@ and open the template in the editor.
 */
 /* Main */
 
-body{
-    padding: 0;
-    margin: 0;
-}
-
 #items{
 
  width: 100%;
  height: 280px;
-
-
+ float: left;
+ position: relative;
 }
 #items .carousel {
     max-width: 500px;
