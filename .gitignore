@@ -1,1 +1,7 @@
-/nbproject/private/
+# modules #
+###################
+**/node_modules
+
+# images #
+###################
+**/src/images
