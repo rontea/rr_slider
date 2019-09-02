@@ -1,0 +1,19 @@
+{
+  "name": "rrslider",
+  "version": "1.0.0",
+  "description": "Slider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rontea/rr_slider.git"
+  },
+  "author": "ron tea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rontea/rr_slider/issues"
+  },
+  "homepage": "https://github.com/rontea/rr_slider#readme"
+}
