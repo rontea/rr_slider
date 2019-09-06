@@ -1,5 +1,7 @@
 $(document).ready(function (){
 
-  $("#items").rrslider();
+  $("#items").rrslider({
+    effect: "carousel",
+  });
 
 });

@@ -67,6 +67,7 @@ main : main class or div of the carousel
       var _items;
       var _current;
       var _thumb;
+      var _round = false;
       var activeID = 0;
       /* */
       if (_.effect === "carousel") {
@@ -231,6 +232,7 @@ main : main class or div of the carousel
       function clickButton() {
 
         // click event
+
         $(_carousel +" .thumb li").click(function() {
 
           var _thumb = $(main + " ol.thumb li");
@@ -249,55 +251,7 @@ main : main class or div of the carousel
         });
       }
 
-      /*
-       * Start the Process
-       *
-       * */
-      function initItems() {
 
-        _items = $(_carousel +" li");
-        _thumb = $(main + " ol.thumb li");
-
-        if (_.effect === "fade") {
-
-          $(".carousel .content li").css({
-            "position": "absolute"
-          });
-
-          $(_items[0]).addClass("fadeIn current");
-          $(_thumb[0]).addClass('active');
-
-        } else if (_.effect === "carousel") {
-
-          $(_items[0]).addClass("current");
-
-          $(_thumb[0]).addClass('active');
-
-          /* Set the width of the ul */
-          $("" + main + " ul").css("width", "" + $("" + main + " li").width() * imgCount + "");
-          $(".carousel .content li").css({
-            "opacity": "1",
-            "position": "relative",
-            "float": "left"
-          });
-          $("" + main + " ul").css("position", "absolute");
-
-        } else if (_.effect === "carousel1") {
-
-          $(_items[0]).addClass("current");
-          $(_thumb[0]).addClass('active');
-          $("" + main + " ul").css("width", "" + $("" + main + " li").width() * imgCount + "");
-          $(".carousel .content li").css({
-            "opacity": "1",
-            "position": "relative",
-            "float": "left"
-          });
-          $("" + main + " ul").css("position", "absolute");
-
-        } else {
-
-        }
-      }
       /* Start the Transition */
       function start() {
 
@@ -308,13 +262,64 @@ main : main class or div of the carousel
         }, _.transitionDuration);
 
       }
+      /*
+       * Start the Process
+       *
+       * */
+      function initItems() {
+
+        _items = $(_carousel +" li");
+        _thumb = $(main + " ol.thumb li");
+        // fade
+        if (_.effect === "fade") {
+
+          $("" + _carousel +" .content li").css({
+            "position": "absolute"
+          });
+
+          $(_items[0]).addClass("fadeIn current");
+          $(_thumb[0]).addClass('active');
+
+        // carousel
+        } else if (_.effect === "carousel") {
+
+          $(_items[0]).addClass("current");
+          $(_thumb[0]).addClass("active");
+
+          /* Set the width of the ul */
+          $(_items[0]).addClass("current");
+          $(_thumb[0]).addClass("active");
+          $("" + main + " ul").css("width", "" + $("" + main + " li").width() * imgCount + "");
+          $("" + _carousel + " .content li").css({
+            "opacity": "1",
+            "position": "relative",
+            "float": "left"
+          });
+          $("" + main + " ul").css("position", "absolute");
+
+
+        }  else {
+          $(".carousel .content li").css({
+            "position": "absolute"
+          });
+
+          $(_items[0]).addClass("fadeIn current");
+          $(_thumb[0]).addClass('active');
+        }
+      }
 
       function doCycle(direction) {
-
-
         var prevNext = getPost(direction);
         setActive(prevNext);
         effect(prevNext);
+
+      }
+      function setActive(prevNext) {
+
+        $(_items[prevNext[0]]).removeClass("current");
+        $(_items[prevNext[1]]).addClass("current");
+        $(_thumb[prevNext[1]]).addClass('active').removeClass('thumbNext');
+        $(_thumb[prevNext[0]]).removeClass('active');
 
       }
       /****
@@ -324,70 +329,50 @@ main : main class or div of the carousel
        *
        *
        */
+
       function effect(prevNext) {
+
         var prev = prevNext[0];
         var next = prevNext[1];
         var cur = prevNext[2];
 
+        console.log(_items[cur]);
+        console.log(cur);
+        console.log(prev);
+        console.log(next);
+
         if (_.effect === "fade") {
+
+
           $(_items[prev]).removeClass("fadeIn").addClass("fadeOut");
           $(_items[next]).addClass("fadeIn").removeClass("fadeOut");
+
+
 
         } else if (_.effect === "carousel") {
 
 
-          // $(""+ main +" ul").css("width", ""+$(""+ main +" li").width() * imgCount+"");
 
-          // x is on -100; if cur is coming from the right it means that the < cur is -100% and the > cur is on 100
-
-          var x = 0;
-
-          if (next > cur) {
-
-            while (x < next) {
+          if(_round == true){
 
 
-              x++;
-
-            }
+            $(_items[next]).addClass("carLeft").removeClass("carRight");
+            $(_items[cur]).removeClass("carLeft");
+          } else {
+            $(_items[cur]).addClass("carRight").removeClass("carLeft");
+            $(_items[next]).removeClass("carRight");
 
           }
 
-          /*
-                      var x = 0;
-                      if(next > cur){
+          if (next == imgCount - 1) {
+            _round = true;
+          }
 
-                          // x is on -100; if cur is coming from the right it means that the < cur is -100% and the > cur is on 100
-
-                          x=0;
-                          while(x < next){
-
-                              $(_items[x]).addClass('carRight').removeClass('carLeft');
-                              console.log("  x " + x);
-                              x++;
-                          }
-                           console.log("second " + prev +""+ cur +""+ next +""+ (imgCount - 1));
-
-                      }
-
-                      if(next < cur){
-
-                          // Push the next item
-                           x=cur;
+          if (next == 0) {
+            _round = false;
+          }
 
 
-
-                          while(next <= x){
-
-                              $(_items[x]).addClass('carLeft').removeClass('carRight');
-
-                              console.log("  x " + x);
-                              x--;
-                          }
-                           console.log("first " + prev +""+ cur +""+ next +""+ (imgCount - 1));
-                      }
-             */
-        } else if (_.effect === "") {
 
 
         } else {
@@ -398,14 +383,7 @@ main : main class or div of the carousel
 
       }
 
-      function setActive(prevNext) {
 
-        $(_items[prevNext[0]]).removeClass("current");
-        $(_items[prevNext[1]]).addClass("current");
-        $(_thumb[prevNext[1]]).addClass('active').removeClass('thumbNext');
-        $(_thumb[prevNext[0]]).removeClass('active');
-
-      }
 
 
       /* get item position */
@@ -416,6 +394,8 @@ main : main class or div of the carousel
         var next;
         var prev;
         var cur = $(_carousel + " ul.content li.current").index();
+
+
 
         var thumbClick = $(_carousel + " ol.thumb li").hasClass("thumbNext");
 

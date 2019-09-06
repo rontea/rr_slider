@@ -186,10 +186,15 @@ and open the template in the editor.
         opacity: 0;
 }
 
+#items li.test {
+  margin-right: 100% ;
+
+}
 
 
-#items li.carRight{
+#items li.carRight {
 
+    position: absolute;
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
     animation-timing-function: linear;
@@ -198,26 +203,33 @@ and open the template in the editor.
      -webkit-animation-name: slideRight;
      animation-name: slideRight;
 }
+
+
 #items li.carLeft{
-    -webkit-animation-duration:1s;
-    animation-duration: 1s;
+
+    position: absolute;
+    -webkit-animation-duration:2s;
+    animation-duration: 2s;
      animation-fill-mode: both;
      -webkit-animation-fill-mode: both;
       animation-timing-function: linear;
      animation-name: slideLeft;
      -webkit-animation-name: slideLeft;
-
 }
+
+
+
+
 
 
 
 @keyframes slideRight{
 
     from{
-        margin-left:0;
+      margin: 0;
     }
     to{
-         margin-left:-100%;
+      margin-left: -100%;
     }
 
 }
@@ -225,12 +237,12 @@ and open the template in the editor.
 
 @-webkit-keyframes slideRight{
 
-    from{
-       margin-left:0%;
-    }
-    to{
-         margin-left:-100%;
-    }
+  from{
+    margin: 0;
+  }
+  to{
+    margin-left: -100%;
+  }
 
 }
 
