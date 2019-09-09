@@ -72,6 +72,8 @@ main : main class or div of the carousel
                 var _statusCar = "right";
                 var _clickArrow = false;
                 var _nav = false;
+                var _navThumb = false;
+                var _prevThumb = 0;
             }
             /* Title , Caption , and source */
 
@@ -172,7 +174,10 @@ main : main class or div of the carousel
 
 
                     if ($(this).hasClass("openNav")) {
+
+                      if(_.effect === "carousel"){
                         _nav = true;
+                      }
                         _clickArrow = true;
                         // clear the cycle
                         clearInterval(cycle);
@@ -192,11 +197,12 @@ main : main class or div of the carousel
                 $(nav_right).click(function() {
                     console.log("stat: pause Right click ARROW >>>>>");
 
-
-
-
                     if ($(this).hasClass("openNav")) {
+
+                      if(_.effect === "carousel"){
                         _nav = true;
+                      }
+
                         _clickArrow = true;
                         // clear the cycle
                         clearInterval(cycle);
@@ -234,8 +240,13 @@ main : main class or div of the carousel
             function clickButton() {
 
                 // click event
-
                 $(_carousel + " .thumb li").click(function() {
+
+                    if(_.effect === "carousel"){
+                      _prevThumb = $(_carousel + " .thumb li.active").index();
+                      _navThumb  = true;
+                    }
+
 
 
 
@@ -335,7 +346,7 @@ main : main class or div of the carousel
              *
              */
 
-            function effect(prevNext) {
+            function effect(prevNext){
 
                 var prev = prevNext[0];
                 var next = prevNext[1];
@@ -353,71 +364,89 @@ main : main class or div of the carousel
                     // carousel
                 } else if (_.effect === "carousel") {
 
-                    var direction = prevNext[3]
-                    $(_items[next]).removeClass("carRight").removeClass("carLeft");
-                    $(_items[cur]).removeClass("carLeft").removeClass("carRight");
-                    // set the round
+                  var direction = prevNext[3]
 
 
+                    if(_navThumb === true){
 
-                    console.log(direction + " direction");
-
-                    // make sure that the round will not effect an issue on carousel
-                    //left
-                     if(direction == "assending" && _round == false){
-
-                      if(cur == _imgMax){
-
-                        for (var i = _imgMax; i>=0; i++){
-                          $(_items[i]).addClass("carLeft");
-                        }
-
-                        console.log("first ==========");
-
-                      }else {
-                        $(_items[cur]).addClass("carRight");
+                      $(_items[cur]).removeClass("carRight").removeClass("carLeft");
+                      $(_items[next]).removeClass("carLeft").removeClass("carRight");
 
 
-                        console.log("second ==========");
-                      }
-                    } else if ((direction == "assending" && _round == true) || (direction == "desending" && _round == true)) {
-
-                            $(_items[next]).addClass("carLeft");
-
-                        console.log("third ==========");
-
-
-                      } else if(direction == "desending" && _round == false) {
-
-                      if(cur == 0){
-
-
-                        for (var i = 0; i < _imgMax; i++){
+                      if (cur < next){
+                        for (var i = cur; i < next; i++){
                           $(_items[i]).addClass("carRight");
+
                         }
+                      }else if (next < cur) {
 
-                      }else {
-                        $(_items[next]).addClass("carLeft");
+                          $(_items[next]).addClass("carLeft");
 
                       }
 
-                        console.log("fourth ==========");
 
-                    }
-                    if (next == _imgMax) {
-                        _round = true;
-                    }
-                    else if (next == 0) {
-                        _round = false;
-                    } else {
-                      if(  _nav  == true){
-                        _round = false;
-                        _nav  = false;
+                      _navThumb = false;
+                    }else{
+                      $(_items[cur]).removeClass("carRight").removeClass("carLeft");
+                      $(_items[next]).removeClass("carLeft").removeClass("carRight");
+                      //$(_items[cur]).removeClass("carLeft").removeClass("carRight");
+                      // set the round
+
+                      // make sure that the round will not effect an issue on carousel
+                      //left
+                       if(direction == "assending" && _round === false){
+
+                        if(cur === _imgMax){
+
+                          for (var i = _imgMax; i>=0; i--){
+                            $(_items[next]).addClass("carLeft");
+                          }
+
+                          console.log("first ==========");
+
+                        }else {
+
+                            $(_items[cur]).addClass("carRight");
+
+                          console.log("second ==========");
+                        }
+                      } else if ((direction === "assending" && _round === true) || (direction === "desending" && _round === true)) {
+
+                          $(_items[next]).addClass("carLeft");
+
+                          console.log("third ==========");
+
+                        } else if(direction === "desending" && _round === false) {
+
+                        if(cur == 0){
+
+                          for (var i = 0; i < _imgMax; i++){
+                            $(_items[i]).addClass("carRight");
+                          }
+
+                        }else {
+                          $(_items[next]).addClass("carLeft");
+
+                        }
+                          console.log("fourth ==========");
+
                       }
+                      console.log(_nav);
+                      if (next == _imgMax) {
+                          _round = true;
+                      }
+                      else if (next == 0) {
+                          _round = false;
+                      } else {
+                        // when click left and right make sure that it will know where the direction
+                        if(  _nav  == true){
+                          _round = false;
+                          _nav  = false;
+                        }
+                      }
+
                     }
 
-
-                    console.log(_nav);
                     console.log(_round);
                 } else {
                     /* Default Effect fade out */
@@ -530,10 +559,11 @@ main : main class or div of the carousel
                         }
                     }
                 } else {
-                    console.log('=============== Click thumb cycle ===============');
+                    console.log('=============== Click thumb cycle =============== ' + _prevThumb );
 
                     next = $(_carousel + " ol.thumb li.thumbNext").index();
                     prev = cur;
+
                 }
 
                 prevNext = [prev, next, cur, direction];
