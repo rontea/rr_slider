@@ -355,7 +355,8 @@ main : main class or div of the carousel
 						}
 					}
 
-				}else if (_.effect === "carousel2") {
+				}else if (_.effect === "carousel2"){
+        // carousel 2
           $(_items[cur]).removeClass("carRight").removeClass("carLeft");
           $(_items[next]).removeClass("carRight").removeClass("carLeft");
 
@@ -370,7 +371,29 @@ main : main class or div of the carousel
             }else if (_direction === "left") {
               $(_items[next]).addClass("carLeft");
             }
-            }
+          }else {
+            //here
+
+            if (cur < next) {
+							for (var i = cur; i < next; i++) {
+								$(_items[i]).addClass("carRight");
+							}
+              _direction = "right";
+
+
+
+						} else if (next < cur) {
+							$(_items[next]).addClass("carLeft");
+
+
+							if(next === 0){
+								_direction = "right";
+							}else {
+								_direction = "left";
+							}
+
+						}
+          }
         } else {
 					/* Default Effect fade out */
 					$(_items[prev]).removeClass("fadeIn").addClass("fadeOut");
@@ -501,9 +524,6 @@ main : main class or div of the carousel
 					console.log('=============== Click thumb cycle =============== ');
 					next = $(_carousel + " ol.thumb li.thumbNext").index();
 					prev = cur;
-
-          total = next * 100;
-          console.log(total);
 				}
 				prevNext = [prev, next, cur, direction, thumbClick ];
 				return prevNext;
