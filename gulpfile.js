@@ -94,7 +94,7 @@ var paths = {
       dest: "build/css/inc"
     },
     styles: {
-      src: "src/scss/*.scss",
+      src: "src/scss/**/*.scss",
       dest: "build/css/"
     }
 };

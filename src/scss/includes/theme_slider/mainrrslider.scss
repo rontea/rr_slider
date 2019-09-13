@@ -201,7 +201,7 @@ and open the template in the editor.
 
 #items li.carLeft{
 
-  
+
     -webkit-animation-duration:2s;
     animation-duration: 2s;
      animation-fill-mode: both;
@@ -253,4 +253,73 @@ and open the template in the editor.
     to{
          margin-left:0;
     }
+}
+
+
+
+#items li.slide-to-left{
+
+
+    -webkit-animation-duration:2s;
+    animation-duration: 2s;
+     animation-fill-mode: both;
+     -webkit-animation-fill-mode: both;
+      animation-timing-function: linear;
+     animation-name: slide-left;
+     -webkit-animation-name: slide-left;
+}
+
+
+@keyframes slide-left{
+
+  from{
+    margin-left: 0;
+
+  }
+  to{
+      margin-left: -100%;
+  }
+
+}
+
+@-webkit-keyframes slide-left{
+  from{
+    margin-left: 0;
+
+  }
+  to{
+      margin-left: -100%;
+  }
+}
+#items li.slide-to-right{
+
+
+    -webkit-animation-duration:2s;
+    animation-duration: 2s;
+     animation-fill-mode: both;
+     -webkit-animation-fill-mode: both;
+      animation-timing-function: linear;
+     animation-name: slide-right;
+     -webkit-animation-name: slide-right;
+}
+
+@keyframes slide-right{
+
+  from{
+    margin-left: -100%;
+
+  }
+  to{
+      margin-left: 0;
+  }
+}
+
+@-webkit-keyframes slide-right{
+  from{
+    margin-left: -100%;
+
+  }
+  to{
+      margin-left: 0;
+  }
 }

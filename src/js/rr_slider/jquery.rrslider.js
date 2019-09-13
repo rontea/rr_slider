@@ -1,7 +1,11 @@
 /*
  *
  * Credit to Animate.css : https://daneden.github.io/animate.css/
- *
+ * Required Jquery.keyframes.min.js
+
+https://github.com/Keyframes/jQuery.Keyframes
+
+
  */
 /*
 
@@ -64,20 +68,21 @@ main : main class or div of the carousel
 			var activeID = 0;
 			/* */
 			if (_.effect === "carousel") {
-				var _statusCar = "right";
+
+				var _direction = "right";
 				var _clickArrow = false;
-				var _nav = false;
-				var _navThumb = false;
-				var _prevThumb = 0;
+				var _marginValue = "-100%";
+
 			}else if (_.effect === "carousel2"){
         var _direction = "right";
-        var _effectPholder = new Array();
+				var _clickArrow = false;
       }
 			/* Title , Caption , and source */
 			var src = new Array();
 			var titles = new Array();
 			var link = new Array();
 			var captions = new Array();
+
 
 			/* Get info title, links, image src */
 			getInfo();
@@ -92,6 +97,8 @@ main : main class or div of the carousel
 			 * Get the information of the data to post include title, caption and link
 			 *
 			 */
+
+
 			function getInfo() {
 				for (var y = 0; y < imgCount; y++) {
 					// get all the title
@@ -154,9 +161,7 @@ main : main class or div of the carousel
 				$(nav_left).click(function() {
 					console.log("stat: pause Left click ARROW");
 					if ($(this).hasClass("openNav")) {
-						if (_.effect === "carousel") {
-							_nav = true;
-						}
+
 						_clickArrow = true;
 						// clear the cycle
 						clearInterval(cycle);
@@ -175,9 +180,7 @@ main : main class or div of the carousel
 				$(nav_right).click(function() {
 					console.log("stat: pause Right click ARROW >>>>>");
 					if ($(this).hasClass("openNav")) {
-						if (_.effect === "carousel") {
-							_nav = true;
-						}
+
 						_clickArrow = true;
 						// clear the cycle
 						clearInterval(cycle);
@@ -210,10 +213,7 @@ main : main class or div of the carousel
 			function clickButton() {
 				// click event
 				$(_carousel + " .thumb li").click(function() {
-					if (_.effect === "carousel") {
-						_prevThumb = $(_carousel + " .thumb li.active").index();
-						_navThumb = true;
-					}
+
 					var _thumb = $(main + " ol.thumb li");
 					var next = $(this).index();
 					// make sure that it is not active
@@ -240,7 +240,7 @@ main : main class or div of the carousel
 			 *
 			 * */
 			function initItems() {
-				_items = $(_carousel + " li");
+				_items = $(_carousel + " ul li");
 				_thumb = $(main + " ol.thumb li");
 				// fade
 				if (_.effect === "fade") {
@@ -250,7 +250,20 @@ main : main class or div of the carousel
 					$(_items[0]).addClass("fadeIn current");
 					$(_thumb[0]).addClass('active');
 					// carousel
-				} else if (_.effect === "carousel" || _.effect === "carousel2") {
+				}else if (_.effect === "carousel"){
+					$(_items[0]).addClass("current");
+					$(_thumb[0]).addClass("active");
+					/* Set the width of the ul */
+					$(_items[0]).addClass("current");
+					$(_thumb[0]).addClass("active");
+					$("" + main + " ul").css("width", "" + $("" + main + " li").width() * imgCount + "");
+					$("" + _carousel + " .content li").css({
+						"opacity": "1",
+						"position": "relative",
+						"float": "left"
+					});
+					$("" + main + " ul").css("position", "absolute");
+				} else if (_.effect === "carousel2") {
 					$(_items[0]).addClass("current");
 					$(_thumb[0]).addClass("active");
 					/* Set the width of the ul */
@@ -284,76 +297,104 @@ main : main class or div of the carousel
 				$(_thumb[prevNext[1]]).addClass('active').removeClass('thumbNext');
 				$(_thumb[prevNext[0]]).removeClass('active');
 			}
+			// generateEffect
+			function slideToLeft(selector,start,margin){
 
+				$.keyframe.define({
+    			name: 'slide-ul-left',
+    			from: {
+        		'margin-left': ''+start+'%'
+    			},
+    			to: {
+        		'margin-left': '-'+margin+'%'
+    			}
+				});
+
+				$(selector).playKeyframe({
+						name:'slide-ul-left',
+						duration:"2s",
+						timingFunction:'ease',
+						direction:'normal',
+						fillMode:'forwards',
+
+					});
+
+			}
       /* Effect */
 
 			function effect(prevNext) {
 				var prev = prevNext[0];
 				var next = prevNext[1];
 				var cur = prevNext[2];
-        var thumbClick = prevNext[4];
+				var direction = prevNext[3];
+				var thumbClick = prevNext[4];
 
-				console.log(_items.hasClass('carRight'));
 				// fade
 				if (_.effect === "fade") {
 					$(_items[prev]).removeClass("fadeIn").addClass("fadeOut");
 					$(_items[next]).addClass("fadeIn").removeClass("fadeOut");
 					// carousel
-				} else if (_.effect === "carousel") {
-					var direction = prevNext[3];
-					if (_navThumb === true) {
-						$(_items[cur]).removeClass("carRight").removeClass("carLeft");
-						$(_items[next]).removeClass("carLeft").removeClass("carRight");
-						if (cur < next) {
-							for (var i = cur; i < next; i++) {
-								$(_items[i]).addClass("carRight");
-							}
-						} else if (next < cur) {
-							$(_items[next]).addClass("carLeft");
-						}
-						_navThumb = false;
-					} else {
-						$(_items[cur]).removeClass("carRight").removeClass("carLeft");
-						$(_items[next]).removeClass("carLeft").removeClass("carRight");
+				} else if (_.effect === "carousel"){
 
-						// make sure that the round will not effect an issue on carousel
-						//left
-						if (direction == "assending" && _round === false) {
-							if (cur === _imgMax) {
-								for (var i = _imgMax; i >= 0; i--) {
-									$(_items[next]).addClass("carLeft");
-								}
-								console.log("first ==========");
-							} else {
-								$(_items[cur]).addClass("carRight");
-								console.log("second ==========");
-							}
-						} else if ((direction === "assending" && _round === true) || (direction === "desending" && _round === true)) {
-							$(_items[next]).addClass("carLeft");
-							console.log("third ==========");
-						} else if (direction === "desending" && _round === false) {
-							if (cur == 0) {
-								for (var i = 0; i < _imgMax; i++) {
-									$(_items[i]).addClass("carRight");
-								}
-							} else {
-								$(_items[next]).addClass("carLeft");
-							}
-							console.log("fourth ==========");
-						}
-						console.log(_nav);
-						if (next == _imgMax) {
-							_round = true;
-						} else if (next == 0) {
-							_round = false;
-						} else {
-							// when click left and right make sure that it will know where the direction
-							if (_nav == true) {
-								_round = false;
-								_nav = false;
-							}
-						}
+
+
+					/*
+						going back to first item
+
+					var max = _imgMax -1;
+					for( i=max; i >= 0; i--){
+						$(_items[i]).addClass("slide-to-right");
 					}
+					*/
+
+					/*
+					for( i=0; i < _imgMax; i++){
+						$(_items[i]).addClass("slide-to-left");
+					}*/
+
+						if(_clickArrow === false){
+										$(_items[cur]).removeClass("slide-to-left").removeClass("slide-to-right");
+					          $(_items[next]).removeClass("slide-to-left").removeClass("slide-to-right");
+
+										if(_direction === "right"){
+
+
+										$(_items[cur]).addClass("slide-to-left");
+
+
+										}else if (_direction === "left"){
+
+
+														$(_items[next]).addClass("slide-to-right");
+
+										}
+
+					} else {
+						// go to last
+
+						$(_items[cur]).removeClass("slide-to-left").removeClass("slide-to-right");
+						$(_items[next]).removeClass("slide-to-left").removeClass("slide-to-right");
+
+						var start = cur * 100;
+						var total = (next * 100);
+
+						console.log(' ' + start);
+
+						if(next === _imgMax && cur === 0){
+
+							slideToLeft("" + main + " ul",0,total);
+
+						}else if (next == 0 && cur === _imgMax){
+
+						} else if (_direction === "left"){
+
+						}else if (_direction === "right"){
+							slideToLeft("" + main + " ul","-"+start,total);
+						}
+						_clickArrow = false;
+					}
+
+
 
 				}else if (_.effect === "carousel2"){
         // carousel 2
@@ -410,54 +451,62 @@ main : main class or div of the carousel
 
 				if (thumbClick === false) {
 					if (_.effect === "carousel") {
-						var imgC = imgCount - 1;
-						if (_clickArrow === true) {
-							if (direction === "assending") {
-								if (cur === imgC) {
-									next = 0;
-									prev = cur;
-								} else {
-									prev = cur;
-									next = cur + 1;
-								}
-								// desending
-							} else if (direction === "desending") {
-								if (cur === 0) {
-									next = imgC;
-									prev = cur;
-								} else {
-									prev = cur;
+						console.log(_clickArrow);
+						if(_clickArrow === false){
+							if(direction === "assending" && _direction === "right" ||
+							 		direction == "desending" && _direction === "right" ){
+
+								prev = cur;
+								next = cur + 1;
+
+								if(cur === _imgMax){
 									next = cur - 1;
+									_direction = "left";
+								}else {
+
+									_direction = "right";
+
+								}
+							}else if (direction === "assending" && _direction === "left"
+												|| direction == "desending" && _direction === "left" ){
+								prev = cur;
+								next = cur - 1;
+
+								if(cur === 0){
+									next = cur + 1;
+									_direction = "right";
+								}else {
+
+									_direction = "left";
+
 								}
 							}
-							_clickArrow = false;
 						} else {
-							var enter = 0;
-							var curAdd = cur + 1;
-							var imgC = imgCount - 1;
-							if (curAdd < imgCount && _statusCar === "right") {
+
+							prev = cur;
+
+							if(cur === 0 && direction === "desending"){
+								// go to last item
+								next = _imgMax;
+								_direction = "left";
+
+							} else if (cur === _imgMax && direction === "assending"){
+								next = 0;
+								_direction = "right";
+							}else if (direction === "assending" && _direction === "right") {
 								next = cur + 1;
-								prev = cur;
-								enter = 4;
-							}
-							if (cur === imgC && _statusCar === "right") {
-								prev = cur;
+								_direction = "right";
+							}else  {
 								next = cur - 1;
-								_statusCar = "left";
-								enter = 1;
+								_direction = "left";
 							}
-							if (cur === 0 && _statusCar === "left") {
-								_statusCar = "right";
-								next = cur + 1;
-								prev = 0;
-								enter = 2;
-							}
-							if (cur < imgCount && _statusCar === "left") {
-								next = cur - 1;
-								prev = cur;
-								enter = 3;
-							}
+
 						}
+
+						console.log('cur ' + cur);
+						console.log('next ' + next);
+						console.log('direction' + _direction);
+
 					}else if (_.effect === "carousel2") {
 
             if (direction === "assending" && _direction === "right"){
@@ -525,7 +574,7 @@ main : main class or div of the carousel
 					next = $(_carousel + " ol.thumb li.thumbNext").index();
 					prev = cur;
 				}
-				prevNext = [prev, next, cur, direction, thumbClick ];
+				prevNext = [prev, next, cur, direction, thumbClick];
 				return prevNext;
 			}
 			/* Halt the Transition */
